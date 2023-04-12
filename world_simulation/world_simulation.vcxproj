@@ -23,11 +23,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="organism.cpp" />
     <ClCompile Include="plant.cpp" />
+    <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animal.h" />
     <ClInclude Include="organism.h" />
     <ClInclude Include="plant.h" />
+    <ClInclude Include="world.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

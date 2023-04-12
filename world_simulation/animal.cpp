@@ -81,6 +81,7 @@ bool Animal::collision(Organism* _other) {
 		eliminate(_other);
 		return true;
 	}
+	return false;
 }
 
 void Animal::reproduce(Organism* _other) {
@@ -163,7 +164,7 @@ void Animal::eliminate(Organism* _other) {
 	/*printf("elimination. (%d, %d) X (%d, %d)\n\n", 
 		position.x, position.y,
 		_other->getPosition().x, _other->getPosition().y);*/
-	if (world->removeOrganism(_other));
+	world->removeOrganism(_other);
 }
 
 
