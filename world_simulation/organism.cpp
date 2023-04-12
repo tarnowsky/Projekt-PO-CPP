@@ -64,8 +64,6 @@ void World::prepareForNextTurn() {
 			j++;
 		}
 	}
-	bool xd = j == numOfOrganismsInArray;
-	cout << xd;
 }
 
 int& World::maxInitiative() {
@@ -85,28 +83,27 @@ int& World::maxInitiative() {
 void World::addOrganism(Organism* organism) {
 	if (numOfOrganismsInArray % SIZEOF_ORGANISM_ARR == 0) {
 		int prevLen = lenOfOrganismArr;
-		lenOfOrganismArr = SIZEOF_ORGANISM_ARR + numOfOrganismsInArray;
+		lenOfOrganismArr = SIZEOF_ORGANISM_ARR + prevLen;
 		Organism** tmp = new Organism * [lenOfOrganismArr];
-		for (int i = 0; i < lenOfOrganismArr; i++) tmp[i] = nullptr;
-		if (!organismArr) organismArr = tmp;
-		else {
-			for (int i = 0; i < prevLen; i++) {
-				tmp[i] = organismArr[i];
-			}
-			organismArr = tmp;
+
+		for (int i = 0; i < lenOfOrganismArr; i++) {
+			if (prevLen == 0 || i >= prevLen) tmp[i] = nullptr;
+			else tmp[i] = organismArr[i];
 		}
+		tmp[prevLen] = organism;
+
+		organismArr = tmp;
 		tmp = nullptr;
-		organismArr[numOfOrganismsInArray++] = organism;
 	}
 	else {
 		for (int i = 0; i <= numOfOrganismsInArray; i++) {
 			if (organismArr[i] == nullptr) {
 				organismArr[i] = organism;
-				numOfOrganismsInArray++;
 				break;
 			}
 		}
 	}
+	numOfOrganismsInArray++;
 	board[organism->getPosition().y][organism->getPosition().x] = organism;
 }
 

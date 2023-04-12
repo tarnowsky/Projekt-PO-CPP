@@ -6,7 +6,7 @@ int main() {
     srand((unsigned int)time(NULL));
     World w(20, 60);
     w.ShowConsoleCursor(false);
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 30; i++) {
         Animal* a;
         if (i % 3 == 1) a = new Animal({ i,0 }, 'A', &w);
         else if(i%3 == 2) a = new Animal({ i,1 }, 'A' + 1, &w);
@@ -30,7 +30,7 @@ int main() {
     w.addOrganism(a);*/
     w.drawWorld();
     while (true) {
-        Sleep(200);
+        Sleep(50);
         w.nextTurn();
         //cin.get();
         w.drawWorld();
