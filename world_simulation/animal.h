@@ -1,5 +1,8 @@
 #pragma once
 #include "organism.h"
+
+constexpr int AGE_OF_CONSTENT = 15;
+
 class Animal :
     public Organism
 {

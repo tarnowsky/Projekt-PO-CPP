@@ -20,6 +20,17 @@ unsigned int& World::getCols() {
 	return cols;
 }
 
+void World::ShowConsoleCursor(bool showFlag)
+{
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	CONSOLE_CURSOR_INFO cursorInfo;
+
+	GetConsoleCursorInfo(out, &cursorInfo);
+	cursorInfo.bVisible = showFlag;
+	SetConsoleCursorInfo(out, &cursorInfo);
+}
+
 void World::nextTurn() {
 	prepareForNextTurn();
 	//printf("Organisms on board -> %d\n", lenOfOrganismArr);
@@ -37,7 +48,6 @@ void World::nextTurn() {
 						movesMade++;
 					}
 					//else printf("Action has not been made by (%d, %d)\n", organismArr[j]->getPosition().x, organismArr[j]->getPosition().y);
-					organismArr[j]->incrementAge();
 				}
 				counter++;
 			}
@@ -46,12 +56,16 @@ void World::nextTurn() {
 }
 
 void World::prepareForNextTurn() {
-	for (int i = 0, j = 0; j < numOfOrganismsInArray && i < lenOfOrganismArr; i++) {
-		if (organismArr[i]) {
+	int j = 0;
+	for (int i = 0; j < numOfOrganismsInArray && i < lenOfOrganismArr; i++) {
+		if (organismArr[i] != nullptr) {
 			organismArr[i]->setMakeMove(true);
+			organismArr[i]->incrementAge();
 			j++;
 		}
 	}
+	bool xd = j == numOfOrganismsInArray;
+	cout << xd;
 }
 
 int& World::maxInitiative() {
@@ -70,12 +84,15 @@ int& World::maxInitiative() {
 
 void World::addOrganism(Organism* organism) {
 	if (numOfOrganismsInArray % SIZEOF_ORGANISM_ARR == 0) {
+		int prevLen = lenOfOrganismArr;
 		lenOfOrganismArr = SIZEOF_ORGANISM_ARR + numOfOrganismsInArray;
 		Organism** tmp = new Organism * [lenOfOrganismArr];
 		for (int i = 0; i < lenOfOrganismArr; i++) tmp[i] = nullptr;
 		if (!organismArr) organismArr = tmp;
 		else {
-			for (int i = 0; i < numOfOrganismsInArray; i++) tmp[i] = organismArr[i];
+			for (int i = 0; i < prevLen; i++) {
+				tmp[i] = organismArr[i];
+			}
 			organismArr = tmp;
 		}
 		tmp = nullptr;
@@ -83,7 +100,7 @@ void World::addOrganism(Organism* organism) {
 	}
 	else {
 		for (int i = 0; i <= numOfOrganismsInArray; i++) {
-			if (!organismArr[i]) {
+			if (organismArr[i] == nullptr) {
 				organismArr[i] = organism;
 				numOfOrganismsInArray++;
 				break;
@@ -169,7 +186,7 @@ Point& Organism::getPosition() {
 	return position;
 }
 
-unsigned int& Organism::getPower() {
+int& Organism::getPower() {
 	return power;
 }
 
@@ -177,7 +194,7 @@ int& Organism::getInitiative() {
 	return initiative;
 }
 
-unsigned int& Organism::getAge() {
+int& Organism::getAge() {
 	return age;
 }
 
@@ -193,7 +210,7 @@ void Organism::setPosition(Point&& p) {
 	position.y = p.y + 1;
 }
 
-void Organism::setPower(unsigned int _power) {
+void Organism::setPower(int _power) {
 	power = _power;
 }
 

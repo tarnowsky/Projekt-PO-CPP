@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include<windows.h>
+
 
 class World;
 class Organism;
@@ -42,6 +44,7 @@ public:
 	World(unsigned int _rows, unsigned int _cols);
 	~World();
 
+	void ShowConsoleCursor(bool showFlag);
 	void nextTurn();
 	void drawWorld();
 	void addOrganism(Organism* organism);
@@ -59,9 +62,9 @@ class Organism {
 protected:
 	Point position;
 	char ID;
-	unsigned int power;
+	int power;
 	int initiative;
-	unsigned int age;
+	int age;
 	bool makeMove;
 	World* world;
 public:
@@ -69,14 +72,14 @@ public:
 
 	char& getID();
 	Point& getPosition();
-	unsigned int& getPower();
+	int& getPower();
 	int& getInitiative();
-	unsigned int& getAge();
+	int& getAge();
 	bool getMakeMove();
 
 
 	void setPosition(Point&& p);
-	void setPower(unsigned int _power);
+	void setPower(int _power);
 	void setInitiative(int _initiative);
 	void incrementAge();
 	void setMakeMove(bool _move);

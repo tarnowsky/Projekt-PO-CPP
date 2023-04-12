@@ -63,12 +63,16 @@ void Animal::action() {
 		break;
 	}
 	world->clearField(move(prevPosition));
+	
 	draw();
 }
 
 // return true if obj can be moved on collided tile, false otherwise
 bool Animal::collision(Organism* _other) {
 	if (_other->getID() == this->ID) {
+		if (_other->getAge() < AGE_OF_CONSTENT) {
+			return false;
+		}
 		reproduce(_other);
 		_other->setMakeMove(false);
 		return false;
