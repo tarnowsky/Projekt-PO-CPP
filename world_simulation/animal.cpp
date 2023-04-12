@@ -63,7 +63,6 @@ void Animal::action() {
 		break;
 	}
 	world->clearField(move(prevPosition));
-	
 	draw();
 }
 
@@ -77,9 +76,15 @@ bool Animal::collision(Organism* _other) {
 		_other->setMakeMove(false);
 		return false;
 	}
-	else if (power >= _other->getPower()) {
-		eliminate(_other);
-		return true;
+	else {
+		if (power >= _other->getPower()) {
+			Organism::eliminate(_other);
+			return true;
+		}
+		else {
+			Organism::eliminate(this);
+			return false;
+		}
 	}
 	return false;
 }
@@ -159,14 +164,6 @@ bool Animal::checkPottencialChildFields(bool*&& possibleDirections, Point* child
 void Animal::draw() {
 	world->setField(this);
 }
-
-void Animal::eliminate(Organism* _other) {
-	/*printf("elimination. (%d, %d) X (%d, %d)\n\n", 
-		position.x, position.y,
-		_other->getPosition().x, _other->getPosition().y);*/
-	world->removeOrganism(_other);
-}
-
 
 
 

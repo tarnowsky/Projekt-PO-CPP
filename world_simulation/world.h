@@ -21,6 +21,7 @@ struct Point {
 	int x, y;
 };
 
+
 enum Directions {
 	UP,
 	RIGHT,

@@ -42,6 +42,7 @@ void World::nextTurn() {
 				if (organismArr[j]->getInitiative() == currInitiative) {
 					if (organismArr[j]->getMakeMove()) {
 						//printf("Action made by (%d, %d)\n", organismArr[j]->getPosition().x, organismArr[j]->getPosition().y);
+						
 						organismArr[j]->action();
 						// po akcji mo¿e ju¿ nie istnieæ
 						if (organismArr[j]) organismArr[j]->setMakeMove(false);
@@ -137,9 +138,17 @@ void World::setField(Organism* organism) {
 
 void World::drawWorld() {
 	system("CLS");
-	for (int i = -1; i <= (int)rows; i++) {
-		for (int j = -1; j <= (int)cols; j++) {
-			if (i == -1 && j == -1) cout << LEFT_TOP_CORNER;
+	/**
+	aby pozbyc sie numerow:
+		1. zmien -2 na -1 w forach
+		2. usun 3 pierwsze linie w drugim forze
+	*/
+	for (int i = -2; i <= rows; i++) {
+		for (int j = -2; j <= cols; j++) {
+			if (i == -2 && (j <= -1 || j == cols) || (j == -2 && (i <= -1 || i == rows))) cout << SPACE;
+			else if (i == -2) cout << (j)%10;
+			else if (j == -2 && i > -1) cout << (i)%10;
+			else if (i == -1 && j == -1) cout << LEFT_TOP_CORNER;
 			else if (i == -1 && j == cols) cout << RIGHT_TOP_CORNER;
 			else if (i == rows && j == -1) cout << LEFT_BOTTOM_CORNER;
 			else if (i == rows && j == cols) cout << RIGHT_BOTTOM_CORNER;

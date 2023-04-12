@@ -12,6 +12,10 @@ Organism::Organism() {
 	makeMove = false;
 }
 
+void Organism::eliminate(Organism* _other) {
+	world->removeOrganism(_other);
+}
+
 // ORGANISM GETTERS
 char& Organism::getID() {
 	return ID;

@@ -13,6 +13,7 @@ protected:
 	World* world;
 public:
 	Organism();
+	void eliminate(Organism* _other);
 
 	char& getID();
 	Point& getPosition();
