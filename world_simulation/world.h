@@ -6,7 +6,7 @@
 
 class Organism;
 
-constexpr int SIZEOF_ORGANISM_ARR = 8;
+constexpr int SIZEOF_ORGANISM_ARR = 16;
 
 constexpr char LEFT_TOP_CORNER = (char)218;
 constexpr char RIGHT_TOP_CORNER = (char)191;
@@ -20,6 +20,7 @@ constexpr char SPACE = (char)32;
 struct Point {
 	int x, y;
 };
+
 
 
 enum Directions {
@@ -38,8 +39,11 @@ private:
 	int rows;
 	int cols;
 
-	int& maxInitiative();
 	void prepareForNextTurn();
+	void sortByInititive();
+	void insertByAge(Organism* organism);
+	void incrementMemory(int _newBlock);
+
 public:
 	World() = default;
 	World(int _rows, int _cols);
