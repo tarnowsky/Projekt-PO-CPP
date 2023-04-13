@@ -22,13 +22,11 @@ public:
 	int& getAge();
 	bool getMakeMove();
 
-
 	void setPosition(Point&& p);
 	void setPower(int _power);
 	void setInitiative(int _initiative);
 	void incrementAge();
 	void setMakeMove(bool _move);
-
 
 	virtual void action() abstract;
 	virtual bool collision(Organism* _other) abstract;

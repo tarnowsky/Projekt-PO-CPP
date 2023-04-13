@@ -33,93 +33,86 @@ void World::ShowConsoleCursor(bool showFlag)
 
 void World::nextTurn() {
 	prepareForNextTurn();
-	//printf("Organisms on board -> %d\n", lenOfOrganismArr);
-	for (int movesMade = 0; movesMade < numOfOrganismsInArray;) {
-		int currInitiative = maxInitiative();
-		if (currInitiative == -1) break;
-		for (int j = 0, counter = 0; counter < numOfOrganismsInArray && j < lenOfOrganismArr; j++) {
-			if (organismArr[j]) {
-				if (organismArr[j]->getInitiative() == currInitiative) {
-					if (organismArr[j]->getMakeMove()) {
-						//printf("Action made by (%d, %d)\n", organismArr[j]->getPosition().x, organismArr[j]->getPosition().y);
-						
-						organismArr[j]->action();
-						// po akcji mo¿e ju¿ nie istnieæ
-						if (organismArr[j]) organismArr[j]->setMakeMove(false);
-						movesMade++;
-					}
-					//else printf("Action has not been made by (%d, %d)\n", organismArr[j]->getPosition().x, organismArr[j]->getPosition().y);
-				}
-				counter++;
-			}
+	for (int i = 0; i < numOfOrganismsInArray; i++) {
+		if (organismArr[i]->getMakeMove()) {
+			organismArr[i]->action();
 		}
 	}
 }
 
 void World::prepareForNextTurn() {
-	int j = 0;
-	for (int i = 0; j < numOfOrganismsInArray && i < lenOfOrganismArr; i++) {
-		if (organismArr[i] != nullptr) {
-			organismArr[i]->setMakeMove(true);
-			organismArr[i]->incrementAge();
-			j++;
-		}
+	for (int i = 0; i < numOfOrganismsInArray; i++) {
+		organismArr[i]->setMakeMove(true);
+		organismArr[i]->incrementAge();
 	}
 }
-
-int& World::maxInitiative() {
-	int currInitiative = -1;
-	for (int i = 0, j = 0; j < numOfOrganismsInArray && i < lenOfOrganismArr; i++) {
-		if (organismArr[i]) {
-			if (organismArr[i]->getMakeMove())
-				if (organismArr[i]->getInitiative() > currInitiative)
-					currInitiative = organismArr[i]->getInitiative();
-			j++;
-		}
-	}
-	return currInitiative;
-}
-
 
 void World::addOrganism(Organism* organism) {
-	if (numOfOrganismsInArray % SIZEOF_ORGANISM_ARR == 0) {
-		int prevLen = lenOfOrganismArr;
-		lenOfOrganismArr = SIZEOF_ORGANISM_ARR + prevLen;
-		Organism** tmp = new Organism * [lenOfOrganismArr];
-
-		for (int i = 0; i < lenOfOrganismArr; i++) {
-			if (prevLen == 0 || i >= prevLen) tmp[i] = nullptr;
-			else tmp[i] = organismArr[i];
-		}
-		tmp[prevLen] = organism;
-
-		organismArr = tmp;
-		tmp = nullptr;
-	}
-	else {
-		for (int i = 0; i <= numOfOrganismsInArray; i++) {
-			if (organismArr[i] == nullptr) {
-				organismArr[i] = organism;
-				break;
-			}
-		}
-	}
+	// zaalokuj now¹ pamiêæ jesli jest taka potrzeba
+	if (numOfOrganismsInArray % SIZEOF_ORGANISM_ARR == 0) incrementMemory(SIZEOF_ORGANISM_ARR);
+	// dodaj organizm
+	insertByAge(organism);
 	numOfOrganismsInArray++;
+	sortByInititive();
 	board[organism->getPosition().y][organism->getPosition().x] = organism;
 }
 
-bool World::removeOrganism(Organism* organism) {
-	for (int i = 0, j = 0; j < numOfOrganismsInArray && i < lenOfOrganismArr; i++) {
-		if (organismArr[i]) {
-			j++;
-			if (organismArr[i] == organism) {
-				organismArr[i] = nullptr;
-				numOfOrganismsInArray--;
-				return true;
-			}
+void World::incrementMemory(int _newBlock) {
+	int prevLen = lenOfOrganismArr;
+	lenOfOrganismArr = prevLen + _newBlock;
+	Organism** tmp = new Organism * [lenOfOrganismArr];
+
+	// skopiuj Organizmy ze starej tablicy do nowej
+	for (int i = 0; i < prevLen; i++)
+		tmp[i] = organismArr[i];
+
+	// wyzeruj pozosta³e elementy tablicy
+	for (int i = prevLen; i < lenOfOrganismArr; i++)
+		tmp[i] = nullptr;
+
+	organismArr = tmp;
+	tmp = nullptr;
+}
+
+void World::sortByInititive() {
+	int i, j;
+	Organism* key;
+	for (i = 1; i < numOfOrganismsInArray; i++) {
+		key = organismArr[i];
+		j = i - 1;
+		while (j >= 0 && organismArr[j]->getInitiative() < key->getInitiative()) {
+			organismArr[j + 1] = organismArr[j];
+			j = j - 1;
 		}
+		organismArr[j + 1] = key;
 	}
-	return false;
+}
+
+void World::insertByAge(Organism* organism) {
+	// 1. znajdz pierwszy organizm z mniejszym wiekiem
+	int indx = 0;
+	for (indx; organismArr[indx] != nullptr && (organismArr[indx]->getAge() >= organism->getAge()); indx++);
+
+	// brak oragnizmow w tabeli lub brak organizmow z mniejszym wiekiem
+	if (!organismArr[indx]) organismArr[indx] = organism;
+	else {
+		// zrób mniejsce na organizm
+		for (int i = numOfOrganismsInArray - 1; i >= indx; i--) organismArr[i + 1] = organismArr[i];
+		// wstaw organizm na miejsce
+		organismArr[indx] = organism;
+	}
+}
+
+
+bool World::removeOrganism(Organism* organism) {
+	int indx = 0;
+	for (indx; indx < numOfOrganismsInArray && organismArr[indx] != organism; indx++);
+	if (indx == numOfOrganismsInArray) return false;
+	else for (int i = indx + 1; i < numOfOrganismsInArray; i++) organismArr[i - 1] = organismArr[i];
+	organismArr[numOfOrganismsInArray - 1] = nullptr;
+
+	board[organism->getPosition().y][organism->getPosition().x] = nullptr;
+	numOfOrganismsInArray--;
 }
 
 Organism**& World::getOrganismArr() {

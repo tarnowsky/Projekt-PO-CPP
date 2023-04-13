@@ -27,12 +27,15 @@ void Animal::action() {
 	int direction = choicesArr[rand() % numOfChoices];
 
 	// check if move does collision
+	bool canBeMoved = true;
+
 	Organism* _other = nullptr;
 	switch (direction) {
 	case UP:
 		_other = world->getField({ position.x, position.y - 1 });
 		if (_other) {
-			if (collision(_other))
+			canBeMoved = collision(_other);
+			if (canBeMoved)
 				position.y--;
 		}
 		else position.y--;
@@ -40,7 +43,8 @@ void Animal::action() {
 	case RIGHT:
 		_other = world->getField({ position.x + 1, position.y });
 		if (_other) {
-			if (collision(_other))
+			canBeMoved = collision(_other);
+			if (canBeMoved)
 				position.x++;;
 		}
 		else position.x++;;
@@ -48,7 +52,8 @@ void Animal::action() {
 	case DOWN:
 		_other = world->getField({ position.x, position.y + 1 });
 		if (_other) {
-			if (collision(_other))
+			canBeMoved = collision(_other);
+			if (canBeMoved)
 				position.y++;
 		}
 		else position.y++;
@@ -56,14 +61,18 @@ void Animal::action() {
 	case LEFT:
 		_other = world->getField({ position.x - 1, position.y });
 		if (_other) {
-			if (collision(_other))
+			canBeMoved = collision(_other);
+			if (canBeMoved)
 				position.x--;
 		}
 		else position.x--;
 		break;
 	}
-	world->clearField(move(prevPosition));
-	draw();
+	if (canBeMoved) {
+		world->clearField(move(prevPosition));
+		draw();
+	}
+	
 }
 
 // return true if obj can be moved on collided tile, false otherwise
