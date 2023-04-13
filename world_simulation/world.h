@@ -41,7 +41,7 @@ private:
 
 	void prepareForNextTurn();
 	void sortByInititive();
-	void insertByAge(Organism* organism);
+	void insertByInitiative(Organism* organism);
 	void incrementMemory(int _newBlock);
 
 public:
@@ -51,14 +51,17 @@ public:
 
 	void ShowConsoleCursor(bool showFlag);
 	void nextTurn();
-	void drawWorld();
 	void addOrganism(Organism* organism);
-	void clearField(Point&& p);
 	bool removeOrganism(Organism* organism);
+
+	void drawWorld();
+	void drawField(Point&& p, char c);
+
 	Organism*& getField(Point&& p);
 	Organism**& getOrganismArr();
 	int& getRows();
 	int& getCols();
 
-	void setField(Organism* organism);
+	void setField(Point&& p, Organism* organism);
+
 };

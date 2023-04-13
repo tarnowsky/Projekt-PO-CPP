@@ -51,9 +51,8 @@ void World::addOrganism(Organism* organism) {
 	// zaalokuj now¹ pamiêæ jesli jest taka potrzeba
 	if (numOfOrganismsInArray % SIZEOF_ORGANISM_ARR == 0) incrementMemory(SIZEOF_ORGANISM_ARR);
 	// dodaj organizm
-	insertByAge(organism);
+	insertByInitiative(organism);
 	numOfOrganismsInArray++;
-	sortByInititive();
 	board[organism->getPosition().y][organism->getPosition().x] = organism;
 }
 
@@ -88,12 +87,12 @@ void World::sortByInititive() {
 	}
 }
 
-void World::insertByAge(Organism* organism) {
-	// 1. znajdz pierwszy organizm z mniejszym wiekiem
+void World::insertByInitiative(Organism* organism) {
+	// 1. znajdz pierwszy organizm z mniejsz¹ inicjatyw¹
 	int indx = 0;
-	for (indx; organismArr[indx] != nullptr && (organismArr[indx]->getAge() >= organism->getAge()); indx++);
+	for (indx; organismArr[indx] != nullptr && (organismArr[indx]->getInitiative() >= organism->getInitiative()); indx++);
 
-	// brak oragnizmow w tabeli lub brak organizmow z mniejszym wiekiem
+	// brak oragnizmow w tabeli lub brak organizmow z mniejsz¹ inicjatyw¹
 	if (!organismArr[indx]) organismArr[indx] = organism;
 	else {
 		// zrób mniejsce na organizm
@@ -124,9 +123,10 @@ Organism*& World::getField(Point&& p) {
 	return board[p.y][p.x];
 }
 
-void World::setField(Organism* organism) {
-	board[organism->getPosition().y][organism->getPosition().x] = organism;
+void World::setField(Point&& p, Organism* organism) {
+	board[p.y][p.x] = organism;
 }
+
 
 
 void World::drawWorld() {
@@ -136,12 +136,12 @@ void World::drawWorld() {
 		1. zmien -2 na -1 w forach
 		2. usun 3 pierwsze linie w drugim forze
 	*/
-	for (int i = -2; i <= rows; i++) {
-		for (int j = -2; j <= cols; j++) {
-			if (i == -2 && (j <= -1 || j == cols) || (j == -2 && (i <= -1 || i == rows))) cout << SPACE;
+	for (int i = -1; i <= rows; i++) {
+		for (int j = -1; j <= cols; j++) {
+			/*if (i == -2 && (j <= -1 || j == cols) || (j == -2 && (i <= -1 || i == rows))) cout << SPACE;
 			else if (i == -2) cout << (j)%10;
-			else if (j == -2 && i > -1) cout << (i)%10;
-			else if (i == -1 && j == -1) cout << LEFT_TOP_CORNER;
+			else if (j == -2 && i > -1) cout << (i)%10;*/
+			if (i == -1 && j == -1) cout << LEFT_TOP_CORNER;
 			else if (i == -1 && j == cols) cout << RIGHT_TOP_CORNER;
 			else if (i == rows && j == -1) cout << LEFT_BOTTOM_CORNER;
 			else if (i == rows && j == cols) cout << RIGHT_BOTTOM_CORNER;
@@ -154,8 +154,10 @@ void World::drawWorld() {
 	}
 }
 
-void World::clearField(Point&& p) {
-	board[p.y][p.x] = nullptr;
+void World::drawField(Point&& p, char c) {
+	COORD coords = { (short)(p.x + 1), (short)(p.y + 1) };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coords);
+	cout << c;
 }
 
 

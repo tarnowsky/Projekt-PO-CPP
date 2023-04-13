@@ -69,10 +69,11 @@ void Animal::action() {
 		break;
 	}
 	if (canBeMoved) {
-		world->clearField(move(prevPosition));
+		world->setField(move(prevPosition), nullptr);
+		world->setField(move(position), this);
+		world->drawField(move(prevPosition), SPACE);
 		draw();
 	}
-	
 }
 
 // return true if obj can be moved on collided tile, false otherwise
@@ -108,6 +109,7 @@ void Animal::reproduce(Organism* _other) {
 	if (findFieldForChild(&childPosition, _other)) {
 		child = new Animal(move(childPosition), ID, world);
 		world->addOrganism(child);
+		child->draw();
 		/*printf("reproducted (%d, %d) + (%d, %d) -> (%d, %d)\n\n",
 			position.x, position.y,
 			_other->getPosition().x, _other->getPosition().y,
@@ -171,7 +173,7 @@ bool Animal::checkPottencialChildFields(bool*&& possibleDirections, Point* child
 
 
 void Animal::draw() {
-	world->setField(this);
+	world->drawField(move(position), ID);
 }
 
 

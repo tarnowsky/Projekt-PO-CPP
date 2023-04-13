@@ -13,6 +13,7 @@ Organism::Organism() {
 }
 
 void Organism::eliminate(Organism* _other) {
+	world->drawField(move(_other->getPosition()), SPACE);
 	world->removeOrganism(_other);
 }
 
