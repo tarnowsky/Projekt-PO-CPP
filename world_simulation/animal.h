@@ -10,12 +10,15 @@ protected:
     bool findFieldForChild(Point* childPosition, Organism* _other);
     bool checkPottencialChildFields(bool*&& possibleDirections, Point* childPosition, Point&& parentPosition);
 public:
+    Animal() = default;
     void reproduce(Organism* _other);
+    Animal(Point&& p, World* _world);
 
     bool collision(Organism* _other) override;
     void draw() override;
     void action() override;
 
-    Animal(Point&& p, char _animalAscii, World* _world);
+    virtual Organism* newObj(Point&& _position, World* _world);
+
 };
 

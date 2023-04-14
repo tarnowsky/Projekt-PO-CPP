@@ -22,12 +22,14 @@
     <ClCompile Include="animal.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="organism.cpp" />
+    <ClCompile Include="owca.cpp" />
     <ClCompile Include="plant.cpp" />
     <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animal.h" />
     <ClInclude Include="organism.h" />
+    <ClInclude Include="owca.h" />
     <ClInclude Include="plant.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>

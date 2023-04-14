@@ -1,10 +1,10 @@
 #include "animal.h"
 using namespace std;
 
-Animal::Animal(Point&& p, char _animalAscii, World* _world) {
+Animal::Animal(Point&& p, World* _world) {
 	position.x = p.x;
 	position.y = p.y;
-	ID = _animalAscii;
+	ID = 'A';
 	world = _world;
 }
 
@@ -76,6 +76,11 @@ void Animal::action() {
 	}
 }
 
+Organism* Animal::newObj(Point&& _position, World* _world) {
+	Organism* obj = new Animal(move(_position), _world);
+	return obj;
+}
+
 // return true if obj can be moved on collided tile, false otherwise
 bool Animal::collision(Organism* _other) {
 	if (_other->getID() == this->ID) {
@@ -107,7 +112,9 @@ void Animal::reproduce(Organism* _other) {
 	Organism* child = nullptr;
 	Point childPosition = {}, parentPosition = {};
 	if (findFieldForChild(&childPosition, _other)) {
-		child = new Animal(move(childPosition), ID, world);
+		child = this->newObj(move(childPosition), world);
+		child->setInitiative(initiative);
+		child->setPower(power);
 		world->addOrganism(child);
 		child->draw();
 		/*printf("reproducted (%d, %d) + (%d, %d) -> (%d, %d)\n\n",
