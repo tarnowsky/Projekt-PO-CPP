@@ -21,6 +21,6 @@ void Zolw::action() {
 }
 
 bool Zolw::defence(Organism* _other) {
-	cout << "xd";
 	return _other->getPower() < 5;
 }
+
