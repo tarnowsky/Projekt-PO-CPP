@@ -25,6 +25,9 @@ bool Organism::escape() {
 	return false;
 }
 
+bool Organism::poison(Organism* _other) { return false; }
+
+
 void Organism::clearPrevSpot(Point&& prevPosition) {
 	world->setField(move(prevPosition), nullptr);
 	world->drawField(move(prevPosition), SPACE);

@@ -33,6 +33,7 @@ public:
 	virtual bool escape();
 	virtual bool* findPossibleMovementSpots();
 	virtual void afterDeathEffect(Organism* _other);
+	virtual bool poison(Organism* _other);
 
 	virtual void action() abstract;
 	virtual bool collision(Organism* _other) abstract;

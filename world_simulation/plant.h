@@ -17,7 +17,5 @@ public:
 
     virtual Organism* newObj(Point&& _position, World* _world);
     virtual bool tryingToPlant();
-    virtual void afterDeathEffect(Organism* _other) override;
-
 };
 

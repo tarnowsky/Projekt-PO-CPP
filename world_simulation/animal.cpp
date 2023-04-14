@@ -57,13 +57,13 @@ bool Animal::fight(Organism* _other) {
 	if (power >= _other->getPower()) {
 		if (!_other->escape()) {
 			_other->afterDeathEffect(this);
-			Organism::eliminate(_other);
+			eliminate(_other);
 		}
-
 		return true;
 	}
 	else {
-		Organism::eliminate(this);
+		if (_other->poison(this)) return false;
+		eliminate(this);
 		return false;
 	}
 }

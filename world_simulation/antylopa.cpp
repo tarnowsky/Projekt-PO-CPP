@@ -144,10 +144,10 @@ bool Antylopa::fight(Organism* _other) {
 			_other->afterDeathEffect(this);
 			Organism::eliminate(_other);
 		}
-
 		return true;
 	}
 	else {
+		if (_other->poison(this)) return false;
 		if (!escape())
 			Organism::eliminate(this);
 		return false;

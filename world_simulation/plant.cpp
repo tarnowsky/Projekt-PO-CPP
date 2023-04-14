@@ -68,16 +68,7 @@ bool Plant::menagePlanting(int _direction) {
 }
 
 
-bool Plant::collision(Organism* _other) {
-	if (_other->getID() == this->ID) return false;
-	else {
-		if (power >= _other->getPower()) {
-			Organism::eliminate(_other);
-			return true;
-		}
-		else return false;
-	}
-}
+bool Plant::collision(Organism* _other) { return true; }
 
 void Plant::draw() {
 	world->drawField(move(newPlantPosition), ID);
@@ -95,4 +86,3 @@ Organism* Plant::newObj(Point&& _position, World* _world) {
 	return obj;
 }
 
-void Plant::afterDeathEffect(Organism* _other) { return; }
