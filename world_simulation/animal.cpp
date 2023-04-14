@@ -92,17 +92,22 @@ bool Animal::collision(Organism* _other) {
 		return false;
 	}
 	else {
-		if (power >= _other->getPower()) {
-			Organism::eliminate(_other);
-			return true;
-		}
-		else {
-			Organism::eliminate(this);
-			return false;
-		}
+		return fight(_other);
 	}
 	return false;
 }
+
+bool Animal::fight(Organism* _other) {
+	if (power >= _other->getPower()) {
+		Organism::eliminate(_other);
+		return true;
+	}
+	else {
+		Organism::eliminate(this);
+		return false;
+	}
+}
+
 
 void Animal::reproduce(Organism* _other) {
 	/*printf("trying to reproduct (%d, %d) + (%d, %d). Looking for place...\n",
@@ -112,7 +117,7 @@ void Animal::reproduce(Organism* _other) {
 	Organism* child = nullptr;
 	Point childPosition = {}, parentPosition = {};
 	if (findFieldForChild(&childPosition, _other)) {
-		child = this->newObj(move(childPosition), world);
+		child = newObj(move(childPosition), world);
 		child->setInitiative(initiative);
 		child->setPower(power);
 		world->addOrganism(child);

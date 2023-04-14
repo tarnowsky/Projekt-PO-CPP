@@ -6,6 +6,7 @@ constexpr int AGE_OF_CONSTENT = 15;
 class Animal :
     public Organism
 {
+
 protected:
     bool findFieldForChild(Point* childPosition, Organism* _other);
     bool checkPottencialChildFields(bool*&& possibleDirections, Point* childPosition, Point&& parentPosition);
@@ -19,6 +20,7 @@ public:
     void action() override;
 
     virtual Organism* newObj(Point&& _position, World* _world);
+    virtual bool fight(Organism* _other);
 
 };
 
