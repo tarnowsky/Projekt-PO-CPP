@@ -1,5 +1,4 @@
-﻿#include "owca.h"
-#include "plant.h"
+﻿#include "organisms.h"
 
 using namespace std;
 
@@ -10,6 +9,11 @@ int main() {
 
     for (int i = 0; i < 10; i++) {
         Organism* obj = new Owca({ 10,i }, &w);
+        w.addOrganism(obj);
+    }
+
+    for (int i = 0; i < 10; i++) {
+        Organism* obj = new Wilk({ 20,i }, &w);
         w.addOrganism(obj);
     }
 
