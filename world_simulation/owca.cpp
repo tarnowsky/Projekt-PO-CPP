@@ -4,7 +4,7 @@ using namespace std;
 Owca::Owca(Point&& p, World* _world) {
 	position = p;
 	world = _world;
-	power = 3;
+	power = 4;
 	initiative = 4;
 	ID = 'O';
 }
