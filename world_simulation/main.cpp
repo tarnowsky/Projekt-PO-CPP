@@ -5,10 +5,10 @@ int main() {
     srand((unsigned int)time(NULL));
     World w(25, 80);
     w.ShowConsoleCursor(false);
-    Owca o({ 0,0 }, &w);
-    Zolw z({ 0,1 }, &w);
+    Antylopa o({ 0,0 }, &w);
+    Wilk wi({ 1,0 }, &w);
     w.addOrganism(&o);
-    w.addOrganism(&z);
+    w.addOrganism(&wi);
     /*for (int i = 0; i < 5; i++) {
         Organism* obj = new Owca({ 10,i }, &w);
         w.addOrganism(obj);

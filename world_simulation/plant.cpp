@@ -3,12 +3,8 @@ using namespace std;
 
 Plant::Plant(Point&& p, World* _world) {
 	position = p;
-	ID = 'P';
+	ID = '-';
 	world = _world;
-	makeMove = false;
-	age = 0;
-	initiative = 0;
-	power = 0;
 	newPlantPosition = { 0, 0 };
 }
 

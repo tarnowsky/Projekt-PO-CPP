@@ -21,6 +21,11 @@ bool Organism::defence(Organism* _other) {
 	return false;
 }
 
+bool Organism::escape() {
+	return false;
+}
+
+
 
 // ORGANISM GETTERS
 char& Organism::getID() {

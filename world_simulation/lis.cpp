@@ -15,8 +15,10 @@ Organism* Lis::newObj(Point&& _position, World* _world) {
 }
 
 bool Lis::fight(Organism* _other) {
+	if (_other->defence(this)) return false;
 	if (power >= _other->getPower()) {
-		Organism::eliminate(_other);
+		if (!_other->escape())
+			Organism::eliminate(_other);
 		return true;
 	}
 	else return false;

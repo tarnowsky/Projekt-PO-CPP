@@ -2,9 +2,8 @@
 using namespace std;
 
 Animal::Animal(Point&& p, World* _world) {
-	position.x = p.x;
-	position.y = p.y;
-	ID = 'A';
+	position = p;
+	ID = '+';
 	world = _world;
 }
 
@@ -117,7 +116,8 @@ bool Animal::collision(Organism* _other) {
 bool Animal::fight(Organism* _other) {
 	if (_other->defence(this)) return false;
 	if (power >= _other->getPower()) {
-		Organism::eliminate(_other);
+		if (!_other->escape())
+			Organism::eliminate(_other);
 		return true;
 	}
 	else {
@@ -125,6 +125,7 @@ bool Animal::fight(Organism* _other) {
 		return false;
 	}
 }
+
 
 
 void Animal::reproduce(Organism* _other) {

@@ -7,7 +7,7 @@ Zolw::Zolw(Point&& p, World* _world) {
 	world = _world;
 	power = 2;
 	initiative = 1;
-	ID = 'Z';
+	ID = (char)189;
 }
 
 Organism* Zolw::newObj(Point&& _position, World* _world) {
