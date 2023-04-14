@@ -5,4 +5,5 @@
 #include "zolw.h"
 #include "antylopa.h"
 
-#include "plant.h"
+#include "trawa.h"
+#include "mlecz.h"

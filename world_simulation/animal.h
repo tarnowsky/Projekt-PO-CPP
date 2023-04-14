@@ -14,15 +14,13 @@ public:
     Animal() = default;
     void reproduce(Organism* _other);
     Animal(Point&& p, World* _world);
-    void clearPrevSpot(Point&& prevPosition);
 
     bool collision(Organism* _other) override;
     void draw() override;
     virtual void action() override;
 
+    virtual bool menageMove(int _direction);
     virtual Organism* newObj(Point&& _position, World* _world);
     virtual bool fight(Organism* _other);
-    virtual bool* findPossibleMovementSpots();
-    virtual bool menageMove(int direction);
 };
 

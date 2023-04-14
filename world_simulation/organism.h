@@ -1,7 +1,6 @@
 #pragma once
 #include "world.h"
 
-
 class Organism {
 protected:
 	Point position;
@@ -13,8 +12,6 @@ protected:
 	World* world;
 public:
 	Organism();
-	void eliminate(Organism* _other);
-
 
 	char& getID();
 	Point& getPosition();
@@ -23,18 +20,20 @@ public:
 	int& getAge();
 	bool getMakeMove();
 
-	void setPosition(Point&& p);
+	void setPosition(Point&& _position);
 	void setPower(int _power);
 	void setInitiative(int _initiative);
-	void incrementAge();
 	void setMakeMove(bool _move);
+
+	void incrementAge();
+	void clearPrevSpot(Point&& _prevPosition);
+	void eliminate(Organism* _other);
+
+	virtual bool defence(Organism* _other);
+	virtual bool escape();
+	virtual bool* findPossibleMovementSpots();
 
 	virtual void action() abstract;
 	virtual bool collision(Organism* _other) abstract;
 	virtual void draw() abstract;
-	virtual bool defence(Organism* _other);
-	virtual bool escape();
-
-
-	~Organism() = default;
 };

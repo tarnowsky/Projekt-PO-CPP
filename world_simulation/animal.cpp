@@ -7,15 +7,62 @@ Animal::Animal(Point&& p, World* _world) {
 	world = _world;
 }
 
-bool* Animal::findPossibleMovementSpots() {
-	bool possibleMoves[] = { true, true, true, true };
+void Animal::action() {
+	int numOfChoices = 0;
+	int choicesArr[4] = {};
+	Point prevPosition = position;
 
-	if (position.y == 0) possibleMoves[UP] = false;
-	if (position.y == world->getRows() - 1) possibleMoves[DOWN] = false;
-	if (position.x == 0) possibleMoves[LEFT] = false;
-	if (position.x == world->getCols() - 1) possibleMoves[RIGHT] = false;
+	bool *possibleMoves = findPossibleMovementSpots();
 
-	return possibleMoves;
+	// prepare array to choose direction of movement from 
+	for (int i = 0, j = 0; i < 4; i++)
+		if (possibleMoves[i]) {
+			numOfChoices++;
+			choicesArr[j++] = i;
+		}
+
+	// toss a coin for movement direction
+	int direction = choicesArr[rand() % numOfChoices];
+
+	// move animal to next spot
+	if (menageMove(direction)) {
+		clearPrevSpot(move(prevPosition));
+		draw();
+	}
+}
+
+
+Organism* Animal::newObj(Point&& _position, World* _world) {
+	Organism* obj = new Animal(move(_position), _world);
+	return obj;
+}
+
+// return true if obj can be moved on collided tile, false otherwise
+bool Animal::collision(Organism* _other) {
+	if (_other->getID() == this->ID) {
+		if (_other->getAge() < AGE_OF_CONSTENT) {
+			return false;
+		}
+		reproduce(_other);
+		_other->setMakeMove(false);
+		return false;
+	}
+	else {
+		return fight(_other);
+	}
+}
+
+bool Animal::fight(Organism* _other) {
+	if (_other->defence(this)) return false;
+	if (power >= _other->getPower()) {
+		if (!_other->escape())
+			Organism::eliminate(_other);
+		return true;
+	}
+	else {
+		Organism::eliminate(this);
+		return false;
+	}
 }
 
 bool Animal::menageMove(int direction) {
@@ -61,71 +108,6 @@ bool Animal::menageMove(int direction) {
 	}
 	return canBeMoved;
 }
-
-void Animal::action() {
-	int numOfChoices = 0;
-	int choicesArr[4] = {};
-	Point prevPosition = position;
-
-	bool *possibleMoves = findPossibleMovementSpots();
-
-	// prepare array to choose direction of movement from 
-	for (int i = 0, j = 0; i < 4; i++)
-		if (possibleMoves[i]) {
-			numOfChoices++;
-			choicesArr[j++] = i;
-		}
-
-	// toss a coin for movement direction
-	int direction = choicesArr[rand() % numOfChoices];
-
-	// move animal to next spot
-	if (menageMove(direction)) {
-		clearPrevSpot(move(prevPosition));
-		draw();
-	}
-}
-
-void Animal::clearPrevSpot(Point&& prevPosition) {
-	world->setField(move(prevPosition), nullptr);
-	world->drawField(move(prevPosition), SPACE);
-}
-
-
-
-Organism* Animal::newObj(Point&& _position, World* _world) {
-	Organism* obj = new Animal(move(_position), _world);
-	return obj;
-}
-
-// return true if obj can be moved on collided tile, false otherwise
-bool Animal::collision(Organism* _other) {
-	if (_other->getID() == this->ID) {
-		if (_other->getAge() < AGE_OF_CONSTENT) {
-			return false;
-		}
-		reproduce(_other);
-		_other->setMakeMove(false);
-		return false;
-	}
-	else {
-		return fight(_other);
-	}
-}
-
-bool Animal::fight(Organism* _other) {
-	if (_other->defence(this)) return false;
-	if (power >= _other->getPower()) {
-		if (!_other->escape())
-			Organism::eliminate(_other);
-		return true;
-	}
-	else {
-		Organism::eliminate(this);
-		return false;
-	}
-}
-
 
 
 void Animal::reproduce(Organism* _other) {

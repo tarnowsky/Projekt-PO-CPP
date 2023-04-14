@@ -35,7 +35,6 @@ void World::nextTurn() {
 	prepareForNextTurn();
 	for (int i = 0; i < numOfOrganismsInArray; i++) {
 		if (organismArr[i]->getMakeMove()) {
-			cin.get();
 			organismArr[i]->action();
 		}
 	}

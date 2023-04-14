@@ -25,6 +25,22 @@ bool Organism::escape() {
 	return false;
 }
 
+void Organism::clearPrevSpot(Point&& prevPosition) {
+	world->setField(move(prevPosition), nullptr);
+	world->drawField(move(prevPosition), SPACE);
+}
+
+bool* Organism::findPossibleMovementSpots() {
+	bool possibleMoves[] = { true, true, true, true };
+
+	if (position.y == 0) possibleMoves[UP] = false;
+	if (position.y == world->getRows() - 1) possibleMoves[DOWN] = false;
+	if (position.x == 0) possibleMoves[LEFT] = false;
+	if (position.x == world->getCols() - 1) possibleMoves[RIGHT] = false;
+
+	return possibleMoves;
+}
+
 
 
 // ORGANISM GETTERS

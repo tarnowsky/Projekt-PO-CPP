@@ -1,36 +1,48 @@
 #include "plant.h"
 using namespace std;
 
-Plant::Plant(Point&& p, World* _world) {
+Plant::Plant() 
+	: newPlantPosition({ 0,0 }) {}
+
+
+Plant::Plant(Point&& p, World* _world)
+	: newPlantPosition({ 0,0 }) {
 	position = p;
 	ID = '-';
 	world = _world;
-	newPlantPosition = { 0, 0 };
 }
 
 void Plant::action() {
-	if ((rand() % 10) >= 5) return;
+	if (!tryingToPlant()) return;
 
 	int numOfChoices = 0;
 	int choicesArr[4] = {};
-	bool possiblePlantSpots[] = { true, true, true, true };
 
-	if (position.y == 0) possiblePlantSpots[UP] = false;
-	if (position.y == world->getRows() - 1) possiblePlantSpots[DOWN] = false;
-	if (position.x == 0) possiblePlantSpots[LEFT] = false;
-	if (position.x == world->getCols() - 1) possiblePlantSpots[RIGHT] = false;
+	bool* possibleMoves = findPossibleMovementSpots();
+
+	// prepare array to choose direction of movement from 
 	for (int i = 0, j = 0; i < 4; i++)
-		if (possiblePlantSpots[i]) {
+		if (possibleMoves[i]) {
 			numOfChoices++;
 			choicesArr[j++] = i;
 		}
+
 	int direction = choicesArr[rand() % numOfChoices];
 
-	// check if move does collision
-	bool canBePlanted = true;
+	if (menagePlanting(direction)) {
+		addNewPlant();
+		draw();
+	}
+}
 
+bool Plant::tryingToPlant() {
+	return (rand() % 10) < 5;
+}
+
+bool Plant::menagePlanting(int _direction) {
+	bool canBePlanted = true;
 	Organism* _other = nullptr;
-	switch (direction) {
+	switch (_direction) {
 	case UP:
 		_other = world->getField({ position.x, position.y - 1 });
 		if (_other) {
@@ -68,10 +80,7 @@ void Plant::action() {
 		else newPlantPosition = { position.x - 1, position.y };
 		break;
 	}
-	if (canBePlanted) {
-		addNewPlant();
-		draw();
-	}
+	return canBePlanted;
 }
 
 
