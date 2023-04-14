@@ -24,13 +24,16 @@
     <ClCompile Include="organism.cpp" />
     <ClCompile Include="owca.cpp" />
     <ClCompile Include="plant.cpp" />
+    <ClCompile Include="wilk.cpp" />
     <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animal.h" />
     <ClInclude Include="organism.h" />
+    <ClInclude Include="organisms.h" />
     <ClInclude Include="owca.h" />
     <ClInclude Include="plant.h" />
+    <ClInclude Include="wilk.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
