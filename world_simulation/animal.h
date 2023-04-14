@@ -17,10 +17,9 @@ public:
 
     bool collision(Organism* _other) override;
     void draw() override;
-    void action() override;
+    virtual void action() override;
 
     virtual Organism* newObj(Point&& _position, World* _world);
     virtual bool fight(Organism* _other);
-
 };
 

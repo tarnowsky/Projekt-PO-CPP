@@ -27,6 +27,7 @@
     <ClCompile Include="plant.cpp" />
     <ClCompile Include="wilk.cpp" />
     <ClCompile Include="world.cpp" />
+    <ClCompile Include="zolw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animal.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="plant.h" />
     <ClInclude Include="wilk.h" />
     <ClInclude Include="world.h" />
+    <ClInclude Include="zolw.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

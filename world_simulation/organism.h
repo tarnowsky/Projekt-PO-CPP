@@ -32,6 +32,9 @@ public:
 	virtual void action() abstract;
 	virtual bool collision(Organism* _other) abstract;
 	virtual void draw() abstract;
+	virtual bool defence(Organism* _other);
+
+
 
 	~Organism() = default;
 };

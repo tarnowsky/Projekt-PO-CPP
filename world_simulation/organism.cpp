@@ -17,6 +17,10 @@ void Organism::eliminate(Organism* _other) {
 	world->removeOrganism(_other);
 }
 
+bool Organism::defence(Organism* _other) {
+	return false;
+}
+
 
 // ORGANISM GETTERS
 char& Organism::getID() {

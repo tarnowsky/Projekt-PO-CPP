@@ -94,10 +94,10 @@ bool Animal::collision(Organism* _other) {
 	else {
 		return fight(_other);
 	}
-	return false;
 }
 
 bool Animal::fight(Organism* _other) {
+	if (_other->defence(this)) return false;
 	if (power >= _other->getPower()) {
 		Organism::eliminate(_other);
 		return true;
