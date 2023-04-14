@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="animal.cpp" />
     <ClCompile Include="antylopa.cpp" />
+    <ClCompile Include="guarana.cpp" />
     <ClCompile Include="lis.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mlecz.cpp" />
@@ -35,6 +36,7 @@
   <ItemGroup>
     <ClInclude Include="animal.h" />
     <ClInclude Include="antylopa.h" />
+    <ClInclude Include="guarana.h" />
     <ClInclude Include="lis.h" />
     <ClInclude Include="mlecz.h" />
     <ClInclude Include="organism.h" />

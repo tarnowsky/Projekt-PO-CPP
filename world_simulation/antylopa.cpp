@@ -140,8 +140,11 @@ bool Antylopa::escape() {
 bool Antylopa::fight(Organism* _other) {
 	if (_other->defence(this)) return false;
 	if (power >= _other->getPower()) {
-		if (!_other->escape())
+		if (!_other->escape()) {
+			_other->afterDeathEffect(this);
 			Organism::eliminate(_other);
+		}
+
 		return true;
 	}
 	else {

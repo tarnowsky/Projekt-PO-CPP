@@ -45,38 +45,22 @@ bool Plant::menagePlanting(int _direction) {
 	switch (_direction) {
 	case UP:
 		_other = world->getField({ position.x, position.y - 1 });
-		if (_other) {
-			canBePlanted = collision(_other);
-			if (canBePlanted)
-				newPlantPosition = { position.x, position.y - 1 };
-		}
+		if (_other) canBePlanted = false;
 		else newPlantPosition = { position.x, position.y - 1 };
 		break;
 	case RIGHT:
 		_other = world->getField({ position.x + 1, position.y });
-		if (_other) {
-			canBePlanted = collision(_other);
-			if (canBePlanted)
-				newPlantPosition = { position.x + 1, position.y };
-		}
+		if (_other) canBePlanted = false;
 		else newPlantPosition = { position.x + 1, position.y };
 		break;
 	case DOWN:
 		_other = world->getField({ position.x, position.y + 1 });
-		if (_other) {
-			canBePlanted = collision(_other);
-			if (canBePlanted)
-				newPlantPosition = { position.x, position.y + 1 };
-		}
+		if (_other) canBePlanted = false;
 		else newPlantPosition = { position.x, position.y + 1 };
 		break;
 	case LEFT:
 		_other = world->getField({ position.x - 1, position.y });
-		if (_other) {
-			canBePlanted = collision(_other);
-			if (canBePlanted)
-				newPlantPosition = { position.x - 1, position.y };
-		}
+		if (_other) canBePlanted = false;
 		else newPlantPosition = { position.x - 1, position.y };
 		break;
 	}
@@ -110,3 +94,5 @@ Organism* Plant::newObj(Point&& _position, World* _world) {
 	Organism* obj = new Plant(move(_position), _world);
 	return obj;
 }
+
+void Plant::afterDeathEffect(Organism* _other) { return; }

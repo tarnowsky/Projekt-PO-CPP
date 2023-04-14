@@ -3,25 +3,25 @@ using namespace std;
 
 int main() {
     srand((unsigned int)time(NULL));
-    World w(25, 80);
+    World w(25, 100);
     w.ShowConsoleCursor(false);
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 10; i++) {
         Organism* obj = new Antylopa({ 10,i }, &w);
         w.addOrganism(obj);
     }
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
         Organism* obj = new Wilk({ 20,i }, &w);
         w.addOrganism(obj);
     }
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 20; i++) {
         Organism* obj = new Zolw({ 30,i }, &w);
         w.addOrganism(obj);
     }
 
     for (int i = 0; i < 3; i++) {
-        Organism* obj = new Lis({ 40,i }, &w);
+        Organism* obj = new Lis({ 90,i }, &w);
         w.addOrganism(obj);
     }
 
@@ -30,13 +30,13 @@ int main() {
         w.addOrganism(obj);
     }
     
-    for (int i = 0; i < 3; i++) {
-        Organism* obj = new Mlecz({ 60,i }, &w);
+    for (int i = 0; i < 1; i++) {
+        Organism* obj = new Guarana({ 31,i }, &w);
         w.addOrganism(obj);
     }
 
     for (int i = 0; i < 3; i++) {
-        Organism* obj = new Trawa({ 0,i }, &w);
+        Organism* obj = new Trawa({ 80,i }, &w);
         w.addOrganism(obj);
     }
 

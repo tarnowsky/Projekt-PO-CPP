@@ -41,7 +41,7 @@ bool* Organism::findPossibleMovementSpots() {
 	return possibleMoves;
 }
 
-
+void Organism::afterDeathEffect(Organism* _other) { return; }
 
 // ORGANISM GETTERS
 char& Organism::getID() {
