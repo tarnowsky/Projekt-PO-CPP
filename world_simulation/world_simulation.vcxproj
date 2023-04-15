@@ -22,6 +22,7 @@
     <ClCompile Include="animal.cpp" />
     <ClCompile Include="antylopa.cpp" />
     <ClCompile Include="barszcz_sosnowskiego.cpp" />
+    <ClCompile Include="czlowiek.cpp" />
     <ClCompile Include="guarana.cpp" />
     <ClCompile Include="lis.cpp" />
     <ClCompile Include="main.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="animal.h" />
     <ClInclude Include="antylopa.h" />
     <ClInclude Include="barszcz_sosnowskiego.h" />
+    <ClInclude Include="czlowiek.h" />
     <ClInclude Include="guarana.h" />
     <ClInclude Include="lis.h" />
     <ClInclude Include="mlecz.h" />
