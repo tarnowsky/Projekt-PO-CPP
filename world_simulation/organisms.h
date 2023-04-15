@@ -4,6 +4,7 @@
 #include "lis.h"
 #include "zolw.h"
 #include "antylopa.h"
+#include "czlowiek.h"
 
 #include "trawa.h"
 #include "mlecz.h"

@@ -38,6 +38,7 @@ private:
 	int numOfOrganismsInArray;
 	int rows;
 	int cols;
+	int roundNum;
 
 	void prepareForNextTurn();
 	void sortByInititive();
@@ -61,6 +62,7 @@ public:
 	Organism**& getOrganismArr();
 	int& getRows();
 	int& getCols();
+	int& getRoundNum();
 
 	void setField(Point&& p, Organism* organism);
 

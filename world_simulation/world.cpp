@@ -3,7 +3,7 @@
 using namespace std;
 
 World::World(int _rows, int _cols)
-	: rows(_rows), cols(_cols), organismArr(nullptr), lenOfOrganismArr(0), numOfOrganismsInArray(0) {
+	: rows(_rows), cols(_cols), organismArr(nullptr), lenOfOrganismArr(0), numOfOrganismsInArray(0), roundNum(0) {
 	board = new Organism * *[rows];
 	for (int i = 0; i < rows; i++) {
 		board[i] = new Organism * [cols];
@@ -33,6 +33,7 @@ void World::ShowConsoleCursor(bool showFlag)
 
 void World::nextTurn() {
 	prepareForNextTurn();
+	roundNum++;
 	for (int i = 0; i < numOfOrganismsInArray; i++) {
 		if (organismArr[i]->getMakeMove()) {
 			organismArr[i]->action();
@@ -118,6 +119,9 @@ Organism**& World::getOrganismArr() {
 	return organismArr;
 }
 
+int& World::getRoundNum() {
+	return roundNum;
+}
 
 Organism*& World::getField(Point&& p) {
 	return board[p.y][p.x];

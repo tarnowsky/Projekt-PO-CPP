@@ -22,13 +22,17 @@ void Animal::action() {
 		}
 
 	// toss a coin for movement direction
-	int direction = choicesArr[rand() % numOfChoices];
+	int direction = movementDirection(choicesArr, numOfChoices);
 
 	// move animal to next spot
 	if (menageMove(direction)) {
 		clearPrevSpot(move(prevPosition));
 		draw();
 	}
+}
+
+int Animal::movementDirection(int* choicesArr, int numOfChoices) {
+	return choicesArr[rand() % numOfChoices];
 }
 
 
