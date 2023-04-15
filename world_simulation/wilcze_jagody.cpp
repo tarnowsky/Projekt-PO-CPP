@@ -17,6 +17,12 @@ Organism* WilczeJagody::newObj(Point&& _position, World* _world) {
 }
 
 bool WilczeJagody::poison(Organism* _other) {
+	world->addInfo("Eliminacja (" +
+		to_string(_other->getPosition().x) + ", " + to_string(_other->getPosition().y) + ")"
+	);
+	world->addInfo("Eliminacja (" +
+		to_string(position.x) + ", " + to_string(position.y) + ")"
+	);
 	eliminate(_other);
 	eliminate(this);
 	return true;

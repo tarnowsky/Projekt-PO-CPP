@@ -10,9 +10,15 @@ Organism::Organism() {
 	age = 0;
 	world = nullptr;
 	makeMove = false;
+
+	newPlantPosition = { 0,0 };
+	powerOn = NULL;
+	powerCanBeUsed = NULL;
+	togglePowerUsageRound = NULL;
 }
 
 void Organism::eliminate(Organism* _other) {
+	
 	world->drawField(move(_other->getPosition()), SPACE);
 	world->removeOrganism(_other);
 }
@@ -71,6 +77,20 @@ bool Organism::getMakeMove() {
 	return makeMove;
 }
 
+bool Organism::getPowerOn() {
+	return powerOn;
+}
+bool Organism::getPowerCanBeUsed() {
+	return powerCanBeUsed;
+}
+int Organism::getTogglePowerUsageRound() {
+	return togglePowerUsageRound;
+}
+
+Point& Organism::getNewPlantPosition() {
+	return newPlantPosition;
+}
+
 
 // ORGANISM SETTERS
 
@@ -94,3 +114,22 @@ void Organism::incrementAge() {
 void Organism::setMakeMove(bool _move) {
 	makeMove = _move;
 }
+
+void Organism::setPowerOn(bool _on) {
+	powerOn = _on;
+}
+void Organism::setPowerCanBeUsed(bool _canBeUsed) {
+	powerCanBeUsed = _canBeUsed;
+}
+void Organism::setTogglePowerUsageRound(int _round) {
+	togglePowerUsageRound = _round;
+}
+
+void Organism::setNewPlantPosition(Point&& _position) {
+	newPlantPosition = _position;
+}
+
+void Organism::setAge(int _age) {
+	age = _age;
+}
+

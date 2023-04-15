@@ -24,6 +24,7 @@ void Animal::action() {
 	// toss a coin for movement direction
 	int direction = movementDirection(choicesArr, numOfChoices);
 
+	if (direction == -1) return;
 	// move animal to next spot
 	if (menageMove(direction)) {
 		clearPrevSpot(move(prevPosition));
@@ -61,11 +62,17 @@ bool Animal::fight(Organism* _other) {
 	if (power >= _other->getPower()) {
 		if (!_other->escape()) {
 			_other->afterDeathEffect(this);
+			world->addInfo("Eliminacja (" +
+				to_string(_other->getPosition().x) + ", " + to_string(_other->getPosition().y) + ")"
+			);
 			eliminate(_other);
 		}
 		return true;
 	}
 	else {
+		world->addInfo("Eliminacja (" +
+			to_string(position.x) + ", " + to_string(position.y) + ")"
+		);
 		if (_other->poison(this)) return false;
 		eliminate(this);
 		return false;
@@ -118,10 +125,6 @@ bool Animal::menageMove(int direction) {
 
 
 void Animal::reproduce(Organism* _other) {
-	/*printf("trying to reproduct (%d, %d) + (%d, %d). Looking for place...\n",
-		position.x, position.y,
-		_other->getPosition().x, _other->getPosition().y);*/
-	// znajdz punkt na ktorym mozna osadzic nowe zwierze
 	Organism* child = nullptr;
 	Point childPosition = {}, parentPosition = {};
 	if (findFieldForChild(&childPosition, _other)) {
@@ -130,12 +133,12 @@ void Animal::reproduce(Organism* _other) {
 		child->setPower(power);
 		world->addOrganism(child);
 		child->draw();
-		/*printf("reproducted (%d, %d) + (%d, %d) -> (%d, %d)\n\n",
-			position.x, position.y,
-			_other->getPosition().x, _other->getPosition().y,
-			child->getPosition().x, child->getPosition().y);*/
+		world->addInfo(
+			"Rozmnozenie (" + to_string(position.x) + ", " + to_string(position.y) + ") + (" +
+			to_string(_other->getPosition().x) + ", " + to_string(_other->getPosition().y) + ") -> (" +
+			to_string(child->getPosition().x) + ", " + to_string(child->getPosition().y) + ")"
+		);
 	}
-	//else printf("place not founded.\n\n");
 }
 
 bool Animal::findFieldForChild(Point* childPosition, Organism* _other) {

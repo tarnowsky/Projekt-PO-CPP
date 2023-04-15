@@ -30,6 +30,7 @@
     <ClCompile Include="organism.cpp" />
     <ClCompile Include="owca.cpp" />
     <ClCompile Include="plant.cpp" />
+    <ClCompile Include="prepareWorld.cpp" />
     <ClCompile Include="trawa.cpp" />
     <ClCompile Include="wilcze_jagody.cpp" />
     <ClCompile Include="wilk.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="organisms.h" />
     <ClInclude Include="owca.h" />
     <ClInclude Include="plant.h" />
+    <ClInclude Include="prepareWorld.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="trawa.h" />
     <ClInclude Include="wilcze_jagody.h" />

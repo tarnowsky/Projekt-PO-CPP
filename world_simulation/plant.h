@@ -6,10 +6,9 @@ class Plant :
 private:
     bool menagePlanting(int _direction);
 protected:
-    Point newPlantPosition;
     void addNewPlant();
 public:
-    Plant();
+    Plant() = default;
     Plant(Point&& p, World* _world);
     virtual void action() override;
     bool collision(Organism* _other) override;

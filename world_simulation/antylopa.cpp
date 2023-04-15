@@ -142,6 +142,9 @@ bool Antylopa::fight(Organism* _other) {
 	if (power >= _other->getPower()) {
 		if (!_other->escape()) {
 			_other->afterDeathEffect(this);
+			world->addInfo("Eliminacja (" +
+				to_string(_other->getPosition().x) + ", " + to_string(_other->getPosition().y) + ")"
+			);
 			Organism::eliminate(_other);
 		}
 		return true;
@@ -149,6 +152,9 @@ bool Antylopa::fight(Organism* _other) {
 	else {
 		if (_other->poison(this)) return false;
 		if (!escape())
+			world->addInfo("Eliminacja (" +
+				to_string(position.x) + ", " + to_string(position.y) + ")"
+			);
 			Organism::eliminate(this);
 		return false;
 	}

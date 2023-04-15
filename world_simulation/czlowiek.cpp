@@ -46,11 +46,16 @@ int Czlowiek::movementDirection(int* choicesArr, int n) {
 				break;
 			}
 		}
-		if (c == 'p' && powerCanBeUsed) {
+		else if (c == 'p' && powerCanBeUsed) {
+			world->addInfo("Zdolnosc specjalna wlaczona");
 			powerOn = true;
 			togglePowerUsageRound = world->getRoundNum() + 4;
 			powerCanBeUsed = false;
 			killingSpread();
+		}
+		else if (c == 's') world->save();
+		else if (c == 'l') {
+			if (world->load()) return -1;
 		}
 	}
 }
@@ -59,6 +64,7 @@ void Czlowiek::action() {
 	if (togglePowerUsageRound == world->getRoundNum()) {
 		if (powerOn) {
 			powerOn = false;
+			world->addInfo("Zdolnosc specjalna wylaczona");
 			togglePowerUsageRound += 6;
 		}
 		else if (!powerCanBeUsed) powerCanBeUsed = true;
@@ -66,6 +72,7 @@ void Czlowiek::action() {
 	if (powerOn) killingSpread();
 	Animal::action();
 	if (powerOn) killingSpread();
+	world->clearInfo();
 }
 
 void Czlowiek::killingSpread() {

@@ -1,12 +1,7 @@
 #include "plant.h"
 using namespace std;
 
-Plant::Plant() 
-	: newPlantPosition({ 0,0 }) {}
-
-
-Plant::Plant(Point&& p, World* _world)
-	: newPlantPosition({ 0,0 }) {
+Plant::Plant(Point&& p, World* _world) {
 	position = p;
 	ID = '-';
 	world = _world;
@@ -75,10 +70,15 @@ void Plant::draw() {
 }
 
 void Plant::addNewPlant() {
+	
 	Organism* child = newObj(move(newPlantPosition), world);
 	child->setInitiative(initiative);
 	child->setPower(power);
 	world->addOrganism(child);
+	world->addInfo("Rozsianie (" +
+		to_string(position.x) + ", " + to_string(position.y) + ") -> (" +
+		to_string(child->getPosition().x) + ", " + to_string(child->getPosition().y) + ")"
+	);
 }
 
 Organism* Plant::newObj(Point&& _position, World* _world) {

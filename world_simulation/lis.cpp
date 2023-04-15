@@ -19,6 +19,9 @@ bool Lis::fight(Organism* _other) {
 	if (power >= _other->getPower()) {
 		if (!_other->escape()) {
 			_other->afterDeathEffect(this);
+			world->addInfo("Eliminacja (" +
+				to_string(_other->getPosition().x) + ", " + to_string(_other->getPosition().y) + ")"
+			);
 			Organism::eliminate(_other);
 		}
 		return true;

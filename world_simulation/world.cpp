@@ -1,9 +1,20 @@
-#include "organism.h"
+#include "organisms.h"
+#include "world.h"
 
 using namespace std;
 
+template<typename Base, typename T>
+inline bool instanceof(const T* ptr) {
+	return dynamic_cast<const Base*>(ptr) != nullptr;
+}
+
 World::World(int _rows, int _cols)
-	: rows(_rows), cols(_cols), organismArr(nullptr), lenOfOrganismArr(0), numOfOrganismsInArray(0), roundNum(0) {
+	: rows(_rows), cols(_cols), organismArr(nullptr), lenOfOrganismArr(0), numOfOrganismsInArray(0), roundNum(0), infoCount(0) {
+	createBoard();
+	infoRow = rows + 4;
+}
+
+void World::createBoard() {
 	board = new Organism * *[rows];
 	for (int i = 0; i < rows; i++) {
 		board[i] = new Organism * [cols];
@@ -11,6 +22,14 @@ World::World(int _rows, int _cols)
 			board[i][j] = nullptr;
 	}
 }
+
+
+void World::deleteBoard() {
+	for (int i = 0; i < rows; i++)
+		delete[] board[i];
+	delete[] board;
+}
+
 
 int& World::getRows() {
 	return rows;
@@ -34,20 +53,47 @@ void World::ShowConsoleCursor(bool showFlag)
 void World::nextTurn() {
 	prepareForNextTurn();
 	roundNum++;
+
+	COORD coords = { 0, (short)infoRow++ };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coords);
+	printf("Runda #%d", roundNum);
+
 	for (int i = 0; i < numOfOrganismsInArray; i++) {
 		if (organismArr[i]->getMakeMove()) {
 			organismArr[i]->action();
 		}
 	}
+	printInfo();
 }
 
+void World::printInfo() {
+	COORD coords;
+	for (int i = 0; i < infoCount; i++) {
+		coords = { 0, (short)infoRow++ };
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coords);
+		cout << i + 1 << ". " << infoBox[i];
+	}
+}
+
+
 void World::prepareForNextTurn() {
+	ShowConsoleCursor(false);
 	for (int i = 0; i < numOfOrganismsInArray; i++) {
 		organismArr[i]->setMakeMove(true);
 		organismArr[i]->incrementAge();
 	}
+	infoRow = rows + 4;
 }
 
+void World::clearInfo() {
+	COORD coords;
+	for (short _row = rows + 2; _row <= (short)(infoRow + 2); _row++) {
+		coords = { (short)(0), (short)(_row) };
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coords);
+		for (int i = 0; i < 70; i++) cout << SPACE;
+	}
+	infoCount = 0;
+}
 void World::addOrganism(Organism* organism) {
 	// zaalokuj now¹ pamiêæ jesli jest taka potrzeba
 	if (numOfOrganismsInArray % SIZEOF_ORGANISM_ARR == 0) incrementMemory(SIZEOF_ORGANISM_ARR);
@@ -55,6 +101,11 @@ void World::addOrganism(Organism* organism) {
 	insertByInitiative(organism);
 	numOfOrganismsInArray++;
 	board[organism->getPosition().y][organism->getPosition().x] = organism;
+}
+
+void World::addInfo(string&& info) {
+	if (infoCount < 15)
+		infoBox[infoCount++] = info;
 }
 
 void World::incrementMemory(int _newBlock) {
@@ -123,6 +174,11 @@ int& World::getRoundNum() {
 	return roundNum;
 }
 
+int& World::getInfoRow() {
+	return infoRow;
+}
+
+
 Organism*& World::getField(Point&& p) {
 	return board[p.y][p.x];
 }
@@ -131,7 +187,9 @@ void World::setField(Point&& p, Organism* organism) {
 	board[p.y][p.x] = organism;
 }
 
-
+void World::setInfoRow(int _num) {
+	infoRow = _num;
+}
 
 void World::drawWorld() {
 	system("CLS");
@@ -167,7 +225,151 @@ void World::drawField(Point&& p, char c) {
 
 
 World::~World() {
-	for (int i = 0; i < rows; i++)
-		delete[] board[i];
-	delete[] board;
+	deleteBoard();
+}
+
+void World::save() {
+	ofstream myFile("save.txt");
+
+	myFile << rows << " ";
+	myFile << cols << " ";
+	myFile << roundNum << " ";
+
+	myFile << infoCount << " ";
+
+	for (int i = 0; i < infoCount; i++)
+		myFile << infoBox[i] << "#";
+	myFile << '\n';
+	for (int i = 0; i < numOfOrganismsInArray; i++) {
+		myFile << organismArr[i]->getID() << " ";
+		myFile << organismArr[i]->getPosition().x << " ";
+		myFile << organismArr[i]->getPosition().y << " ";
+		myFile << organismArr[i]->getPower() << " ";
+		myFile << organismArr[i]->getInitiative() << " ";
+		myFile << organismArr[i]->getAge() << " ";
+		myFile << organismArr[i]->getMakeMove() << " ";
+		myFile << organismArr[i]->getPowerOn() << " ";
+		myFile << organismArr[i]->getPowerCanBeUsed() << " ";
+		myFile << organismArr[i]->getTogglePowerUsageRound() << " ";
+		myFile << organismArr[i]->getNewPlantPosition().x << " ";
+		myFile << organismArr[i]->getNewPlantPosition().y << "\n";
+	}
+
+	myFile.close();
+	COORD c = { 0, rows + 2 };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+	cout << "Stan planszy zapisany.";
+
+}
+
+bool World::load() {
+	COORD c = { 0, rows + 2 };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+
+	ifstream myFile("save.txt");
+	string info;
+	if (myFile.is_open()) {
+		system("CLS");
+		deleteBoard();
+
+		lenOfOrganismArr = 0;
+		numOfOrganismsInArray = 0;
+		organismArr = nullptr;
+
+		getline(myFile, info, SPACE);
+		rows = stoi(info);
+
+		getline(myFile, info, SPACE);
+		cols = stoi(info);
+
+		getline(myFile, info, SPACE);
+		roundNum = stoi(info);
+
+		getline(myFile, info, SPACE);
+		infoCount = stoi(info);
+
+		for (int i = 0; i < infoCount; i++) {
+			getline(myFile, info, '#');
+			infoBox[i] = info;
+		}
+		
+		getline(myFile, info, '\n');
+
+		infoRow = rows + 5;
+
+		createBoard();
+
+		Organism* o = nullptr;
+		string organismType;
+
+		Point position;
+		while (getline(myFile, info, SPACE)) {
+
+			organismType = info;
+
+			getline(myFile, info, SPACE);
+			position.x = stoi(info);
+			getline(myFile, info, SPACE);
+			position.y = stoi(info);
+
+			if (organismType == "C") o = new Czlowiek(move(position), this);
+			if (organismType == "W") o = new Wilk(move(position), this);
+			if (organismType == "O") o = new Owca(move(position), this);
+			if (organismType == "L") o = new Lis(move(position), this);
+			if (organismType == "Z") o = new Zolw(move(position), this);
+			if (organismType == "A") o = new Antylopa(move(position), this);
+			if (organismType == "t") o = new Trawa(move(position), this);
+			if (organismType == "m") o = new Mlecz(move(position), this);
+			if (organismType == "g") o = new Guarana(move(position), this);
+			if (organismType == "j") o = new WilczeJagody(move(position), this);
+			if (organismType == "b") o = new BarszczSosnowskiego(move(position), this);
+
+			getline(myFile, info, SPACE);
+			o->setPower(stoi(info));
+
+			getline(myFile, info, SPACE);
+			o->setInitiative(stoi(info));
+
+			getline(myFile, info, SPACE);
+			o->setAge(stoi(info));
+
+			getline(myFile, info, SPACE);
+			o->setMakeMove(stoi(info));
+
+			getline(myFile, info, SPACE);
+			o->setPowerOn(stoi(info));
+
+			getline(myFile, info, SPACE);
+			o->setPowerCanBeUsed(stoi(info));
+
+			getline(myFile, info, SPACE);
+			o->setTogglePowerUsageRound(stoi(info));
+			
+			getline(myFile, info, SPACE);
+			position.x = stoi(info);
+			getline(myFile, info, '\n');
+			position.y = stoi(info);
+
+			o->setNewPlantPosition(move(position));
+
+			addOrganism(o);
+		}
+
+		drawWorld();
+
+		myFile.close();
+
+		c = { 0, (short)(rows + 2)};
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+		cout << "Zapis wczytany";
+
+		c = { 0, (short)(rows + 4) };
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+		printf("Runda #%d", roundNum);
+		return true;
+	}
+	
+
+	else cout << "Plik zapisu nieznaleziony";
+	return false;
 }
