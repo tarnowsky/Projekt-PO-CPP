@@ -11,7 +11,7 @@ protected:
 public:
     Plant();
     Plant(Point&& p, World* _world);
-    void action() override;
+    virtual void action() override;
     bool collision(Organism* _other) override;
     void draw() override;
 

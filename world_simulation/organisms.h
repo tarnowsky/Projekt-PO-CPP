@@ -9,3 +9,4 @@
 #include "mlecz.h"
 #include "guarana.h"
 #include "wilcze_jagody.h"
+#include "barszcz_sosnowskiego.h"
