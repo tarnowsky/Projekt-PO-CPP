@@ -1,8 +1,7 @@
 # "World Simulation" Project
 
 ## Description
-The "World Simulation" project is a self-playing game created as part of the Object-Oriented 
-Programming course in the second semester of Computer Science studies. 
+The "World Simulation" project is a Object-Oriented, self-playing game.
 The simulation showcases interactions between various objects representing animals in a virtual ecosystem.
 
 ## Project Goals
