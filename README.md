@@ -1,40 +1,4 @@
-# 🇵🇱 Projekt "Symulacja świata"
-
-## Opis
-Projekt "Symulacja świata" to samo grająca się gra stworzona w ramach przedmiotu 
-Programowanie obiektowe na drugim semestrze studiów informatycznych. 
-Symulacja prezentuje interakcje między różnymi obiektami reprezentującymi zwierzęta w wirtualnym ekosystemie.
-
-## Cele projektu
-- Demonstracja umiejętności programowania obiektowego w C++
-- Praktyczne zastosowanie koncepcji OOP, takich jak dziedziczenie, polimorfizm i enkapsulacja
-- Wykorzystanie standardowej biblioteki C++
-
-## Funkcjonalności
-1. Automatyczna symulacja świata z różnymi gatunkami zwierząt
-2. Interakcje między zwierzętami, w tym polowanie, rozmnażanie i migracja
-3. Cykliczne aktualizacje stanu świata
-4. Wizualizacja symulacji w konsoli lub prostym interfejsie graficznym
-
-## Technologie
-- Język programowania: C++
-- Standardowa biblioteka C++:
-  - Kontenery (np. vector, map)
-  - Algorytmy
-  - Obsługa wejścia/wyjścia
-- Programowanie obiektowe:
-  - Klasy i obiekty
-  - Dziedziczenie
-  - Polimorfizm
-  - Enkapsulacja
-
-## Struktura projektu
-- Klasa bazowa `Animal`
-- Klasy pochodne reprezentujące różne gatunki zwierząt
-- Klasa `World` zarządzająca symulacją
-- Klasy pomocnicze do obsługi środowiska i interakcji
-
-# 🇺🇸 "World Simulation" Project
+# "World Simulation" Project
 
 ## Description
 The "World Simulation" project is a self-playing game created as part of the Object-Oriented 
